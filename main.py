@@ -238,7 +238,7 @@ update_button = tk.Button(root, text="Update", command=update)
 update_button.grid(row=10, column=1, padx=10, pady=3, ipadx=50)
 
 # Creating a button to submit what is being updated.
-delete_button = tk.Button(text="delete", command="")
+delete_button = tk.Button(text="Delete", command="")
 delete_button.grid(row=11, column=1, padx=10, pady=5, ipadx=50)
 
 # Creating a button to show button to display what is in the database
