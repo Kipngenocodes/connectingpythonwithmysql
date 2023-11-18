@@ -35,7 +35,7 @@ def submit():
     mycursor = mydatabase.cursor()
 
     # insert into table from the entry widget
-    sql_insertion = ("INSERT INTO Personal_information("
+    msql_insertion = ("INSERT INTO Personal_information("
                      "Firstname,"
                      " Lastname,"
                      " mail,"
@@ -57,16 +57,25 @@ def submit():
         zip_code_entry.get()
     )
 
-    mycursor.execute(sql_insertion, data)
+    mycursor.execute(msql_insertion, data)
 
     # commiting changes to database
     mydatabase.commit()
 
     # closing the  connection upon completing using the database.
     mydatabase.close()
+    # Clear the entry widget
+    firstname_entry.delete(0, "end"),
+    lastname_entry.delete(0, "end"),
+    email_entry.delete(0, "end"),
+    phonenumber_entry.delete(0, "end"),
+    street_address_entry.delete(0, "end"),
+    city_entry.delete(0, "end"),
+    state_entry.delete(0, "end"),
+    zip_code_entry.delete(0, "end")
 
 
-#Creating a function to which is binded to update button
+# Creating a function to which is binded to update button
 
 def update():
     top = tk.Toplevel(root)
@@ -119,8 +128,6 @@ def update():
     # Creating Button which  when commanded, it links with databse to update information
     sbutton = tk.Button(top, text="Submit")
     sbutton.grid(row=8, column=1)
-
-
 
     root.mainloop()
 
