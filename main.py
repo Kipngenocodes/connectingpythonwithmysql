@@ -76,6 +76,10 @@ def submit():
 
 
 def show_value():
+    # creating a tkinter Window to faclitate the viewing results in another window
+    showvalue = tk.Toplevel(root)
+    showvalue.geometry("500x500")
+    showvalue.title("Database Information")
     # connecting to an existing database to query and display information which have been input by the user:
     mydatabase = mysql.connector.connect(
         host="localhost",
@@ -94,21 +98,28 @@ def show_value():
     # allows fetching from the database
     myresult = mycursor.fetchall()
 
-    '''create variable print_myresult and equate it to an empty string where the data will be displayed.
-    Dataretrival process from the database'''
-    print_myresult = " "
+    # Update Tkinter widgets with the retrieved data (replace with your specific widget update logic)
+    for row_index, row_data in enumerate(myresult):
+        for col_index, col_value in enumerate(row_data):
+            result_label = tk.Label(showvalue, text=col_value)
+            result_label.grid(row=row_index, column=col_index)
 
-    # creation of a for loop to loop the query
-    for results in myresult:
-        print_myresult += str(results) +"\n"
-    # printing output from our database
-    print(print_myresult)
+  # '''create variable print_myresult and equate it to an empty string where the data will be displayed.
+    # Dataretrival process from the database'''
+    # print_myresult = " "
+    #
+    # # creation of a for loop to loop the query
+    # for results in myresult:
+    #     print_myresult += str(results) +"\n"
+    # # printing output from our database
+    # print(print_myresult)
 
+    #  Closing the cursor and database after execution.
     mycursor.close()
     mydatabase.close()
 
 
-
+    root.mainloop()
 # Creating a function to which is binded to update button
 
 def update():
@@ -231,7 +242,7 @@ delete_button = tk.Button(text="delete", command="")
 delete_button.grid(row=11, column=1, padx=10, pady=5, ipadx=50)
 
 # Creating a button to show button to display what is in the database
-show_button = tk.Button(root, text="show", command=show_value)
+show_button = tk.Button(root, text="Show",  command=show_value)
 show_button.grid(row=12, column=1, padx=10, pady=5, ipadx=50)
 
 root.mainloop()
