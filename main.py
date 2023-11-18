@@ -75,6 +75,40 @@ def submit():
     zip_code_entry.delete(0, "end")
 
 
+def show_value():
+    # connecting to an existing database to query and display information which have been input by the user:
+    mydatabase = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password='Kapsabet',
+        port="3306",
+        database="Workingwithpython"
+    )
+
+    # creation of cursor which allows us to send command to database  to do something.
+    mycursor = mydatabase.cursor()
+
+    # selecting data from th database
+    mycursor.execute(f"SELECT *, personal_id FROM Personal_information")
+
+    # allows fetching from the database
+    myresult = mycursor.fetchall()
+
+    '''create variable print_myresult and equate it to an empty string where the data will be displayed.
+    Dataretrival process from the database'''
+    print_myresult = " "
+
+    # creation of a for loop to loop the query
+    for results in myresult:
+        print_myresult += str(results) +"\n"
+    # printing output from our database
+    print(print_myresult)
+
+    mycursor.close()
+    mydatabase.close()
+
+
+
 # Creating a function to which is binded to update button
 
 def update():
@@ -196,8 +230,8 @@ update_button.grid(row=10, column=1, padx=10, pady=3, ipadx=50)
 delete_button = tk.Button(text="delete", command="")
 delete_button.grid(row=11, column=1, padx=10, pady=5, ipadx=50)
 
-# Creating a button to submit what is being updated.
-show_button = tk.Button(text="show", command="")
+# Creating a button to show button to display what is in the database
+show_button = tk.Button(root, text="show", command=show_value)
 show_button.grid(row=12, column=1, padx=10, pady=5, ipadx=50)
 
 root.mainloop()
