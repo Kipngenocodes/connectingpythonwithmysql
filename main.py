@@ -1,6 +1,6 @@
 # import tkinter module
 import tkinter as tk
-
+# importing the mysql connector to link to mysql database
 import mysql.connector
 
 # creating a window
@@ -11,42 +11,52 @@ root.title("Users Information.")
 root.geometry("500x500")
 
 # Creatig a databasewhich will keep all our prsonal data
-mydatabase = mysql.connector.connect(
+my_database = mysql.connector.connect(
+    # location of the database
     host="localhost",
+    # defining the user of the database
     user="root",
+    # password for mysql workbench to access my database
     password='Kapsabet',
+    # higligthing the port of the database
     port="3306",
+    # defining or stating the database which all the table which will be used in the project
     database="Workingwithpython"
 )
 
 
-# creating a submit function which will get our imput to database
+# creating a submit function which will get our imput to table  in the database
 def submit():
     # connecting to an existing database to store information which is being input by the user:
-    mydatabase = mysql.connector.connect(
+    my_database = mysql.connector.connect(
+        # location of the database
         host="localhost",
+        # defining the user of the database
         user="root",
+        # password for mysql workbench to access my database
         password='Kapsabet',
+        # higligthing the port of the database
         port="3306",
+        # defining or stating the database which all the table which will be used in the project
         database="Workingwithpython"
     )
 
-    # creation of cursor which allows us to send command to database  to do something.
-    mycursor = mydatabase.cursor()
+    # creation or definition of cursor which allows us to send command to database to do something.
+    mycursor = my_database.cursor()
 
     # insert into table from the entry widget
     msql_insertion = ("INSERT INTO Personal_information("
                       "Firstname,"
                       " Lastname,"
-                      " mail,"
+                      "mail,"
                       "Phonenumber,"
                       "Street_Address,"
                       "City,"
                       "State,"
                       "Zipcode) "
                       "values (%s,%s,%s,%s,%s,%s,%s,%s)")
-    # facilitate the attaching data whih was input by the user.
-    data = (
+    # facilitate the attaching data whih was input by the user and gettig tem to database
+    user_data = (
         firstname_entry.get(),
         lastname_entry.get(),
         email_entry.get(),
@@ -57,14 +67,15 @@ def submit():
         zip_code_entry.get()
     )
 
-    mycursor.execute(msql_insertion, data)
+    # Exeuting a command on the database to get user data.
+    mycursor.execute(msql_insertion, user_data)
 
     # commiting changes to database
-    mydatabase.commit()
+    my_database.commit()
 
     # closing the  connection upon completing using the database.
-    mydatabase.close()
-    # Clear the entry widget
+    my_database.close()
+    # Clear the entry widget so next input can be inpute without any problem
     firstname_entry.delete(0, "end"),
     lastname_entry.delete(0, "end"),
     email_entry.delete(0, "end"),
@@ -78,24 +89,32 @@ def submit():
 def show_value():
     # creating a tkinter Window to faclitate the viewing results in another window
     showvalue = tk.Toplevel(root)
+    # Defining the geometry of the show value window
     showvalue.geometry("500x500")
+    # Defining the title of the show value window
     showvalue.title("Database Information")
     # connecting to an existing database to query and display information which have been input by the user:
-    mydatabase = mysql.connector.connect(
+    my_database = mysql.connector.connect(
+        # location of the database
         host="localhost",
+        # defining the user of the database
         user="root",
+        # password for mysql workbench to access my database
         password='Kapsabet',
+        # higligthing the port of the database
         port="3306",
+        # defining or stating the database which all the table which will be used in the project
         database="Workingwithpython"
     )
 
-    # creation of cursor which allows us to send command to database  to do something.
-    mycursor = mydatabase.cursor()
+    '''creation of cursor which allows us to send command to database 
+    to process data returned by an SQL query, one row at a time.'''
+    mycursor = my_database.cursor()
 
     # selecting data from th database
     mycursor.execute(f"SELECT * FROM Personal_information")
 
-    # allows fetching from the database
+    # allows fetching from the mysql query
     myresult = mycursor.fetchall()
 
     # Update Tkinter widgets with the retrieved data (replace with your specific widget update logic)
@@ -116,20 +135,24 @@ def show_value():
 
     #  Closing the cursor and database after execution.
     mycursor.close()
-    mydatabase.close()
+    my_database.close()
 
     root.mainloop()
 
 
 # Creating a function to which is binded to update button
 
-def edit():
-    global edit
+def edit_func():
+    # Making edit function global to be used outside the function.
+    global edit_func
+    # Defining an edit_func window to facilitate
     top = tk.Toplevel(root)
+    # Defining the geometry of functions.
     top.geometry("500x500")
+    # Defining the title of the edit_func which will display data to be edited
     top.title(" Editing Database")
 
-    # creation of variable to be used in the outside edit
+    # Making variables global to be used outside the function
     global firstname_entry
     global lastname_entry
     global email_entry
@@ -139,7 +162,7 @@ def edit():
     global state_entry
     global zip_code_entry
 
-    # creating labels for the update page
+    # creating labels for the edit-func window page
     firstname_label = tk.Label(top, text="First Name", padx=10, pady=10)
     firstname_label.grid(row=0, column=0)
     lastname_label = tk.Label(top, text="Last Name", padx=10, pady=10)
@@ -157,7 +180,7 @@ def edit():
     zip_code_label = tk.Label(top, text="Zip", padx=10, pady=10)
     zip_code_label.grid(row=7, column=0)
 
-    # creating entry boxes for edit information
+    # creating entry boxes for edit_func which will display the retrieved information.
     firstname_entry = tk.Entry(top)
     firstname_entry.grid(row=0, column=1)
 
@@ -187,16 +210,22 @@ def edit():
     updatebutton.grid(row=8, column=1)
 
     # connecting to an existing database to store information which is being input by the user:
-    mydatabase = mysql.connector.connect(
+    my_database = mysql.connector.connect(
+        # location of the database
         host="localhost",
+        # defining the user of the database
         user="root",
+        # password for mysql workbench to access my database
         password='Kapsabet',
+        # higligthing the port of the database
         port="3306",
+        # defining or stating the database which all the table which will be used in the project
         database="Workingwithpython"
     )
 
     # creation of cursor which allows us to send command to database  to do something.
-    mycursor = mydatabase.cursor()
+    mycursor = my_database.cursor()
+    # Creating a get button to be used to update button
     myrecord = value_button.get()
     # using a cursor to retrieve data which has been saved into database to be updated
     mycursor.execute(" SELECT * FROM personal_information where Personal_id = " + myrecord)
@@ -216,10 +245,10 @@ def edit():
         zip_code_entry.insert(0, record[8])
 
     # creation of a commit to changes we are making to a database.
-    mydatabase.commit()
+    my_database.commit()
 
     # closing the  connection upon completing using the database.
-    mydatabase.close()
+    my_database.close()
 
     root.mainloop()
 
@@ -243,7 +272,6 @@ zip_code_label = tk.Label(root, text="Zip", padx=10, pady=10)
 zip_code_label.grid(row=7, column=0)
 
 # Creation of a  button to add data values to database
-
 update_value_label = tk.Label(root, text="Value", padx=10, pady=10)
 update_value_label.grid(row=9, column=0)
 
@@ -281,7 +309,7 @@ value_button = tk.Entry()
 value_button.grid(row=9, column=1)
 
 # creating update button which when clicked it leads to update page
-edit_button = tk.Button(root, text="Edit", command=edit)
+edit_button = tk.Button(root, text="Edit", command=edit_func)
 edit_button.grid(row=10, column=1, padx=10, pady=3, ipadx=50)
 
 # Creating a button to edit has already been input into a database.
