@@ -36,16 +36,16 @@ def submit():
 
     # insert into table from the entry widget
     msql_insertion = ("INSERT INTO Personal_information("
-                     "Firstname,"
-                     " Lastname,"
-                     " mail,"
-                     "Phonenumber,"
-                     "Street_Address,"
-                     "City,"
-                     "State,"
-                     "Zipcode) "
-                     "values (%s,%s,%s,%s,%s,%s,%s,%s)")
-
+                      "Firstname,"
+                      " Lastname,"
+                      " mail,"
+                      "Phonenumber,"
+                      "Street_Address,"
+                      "City,"
+                      "State,"
+                      "Zipcode) "
+                      "values (%s,%s,%s,%s,%s,%s,%s,%s)")
+    # facilitate the attaching data whih was input by the user.
     data = (
         firstname_entry.get(),
         lastname_entry.get(),
@@ -93,7 +93,7 @@ def show_value():
     mycursor = mydatabase.cursor()
 
     # selecting data from th database
-    mycursor.execute(f"SELECT *, personal_id FROM Personal_information")
+    mycursor.execute(f"SELECT * FROM Personal_information")
 
     # allows fetching from the database
     myresult = mycursor.fetchall()
@@ -104,7 +104,7 @@ def show_value():
             result_label = tk.Label(showvalue, text=col_value)
             result_label.grid(row=row_index, column=col_index)
 
-  # '''create variable print_myresult and equate it to an empty string where the data will be displayed.
+    # '''create variable print_myresult and equate it to an empty string where the data will be displayed.
     # Dataretrival process from the database'''
     # print_myresult = " "
     #
@@ -118,14 +118,26 @@ def show_value():
     mycursor.close()
     mydatabase.close()
 
-
     root.mainloop()
+
+
 # Creating a function to which is binded to update button
 
-def update():
+def edit():
+    global edit
     top = tk.Toplevel(root)
     top.geometry("500x500")
-    top.title(" Update Users Information")
+    top.title(" Editing Database")
+
+    # creation of variable to be used in the outside edit
+    global firstname_entry
+    global lastname_entry
+    global email_entry
+    global phonenumber_entry
+    global street_address_entry
+    global city_entry
+    global state_entry
+    global zip_code_entry
 
     # creating labels for the update page
     firstname_label = tk.Label(top, text="First Name", padx=10, pady=10)
@@ -145,7 +157,7 @@ def update():
     zip_code_label = tk.Label(top, text="Zip", padx=10, pady=10)
     zip_code_label.grid(row=7, column=0)
 
-    # creating entry boxes for update information
+    # creating entry boxes for edit information
     firstname_entry = tk.Entry(top)
     firstname_entry.grid(row=0, column=1)
 
@@ -171,8 +183,43 @@ def update():
     zip_code_entry.grid(row=7, column=1)
 
     # Creating Button which  when commanded, it links with databse to update information
-    sbutton = tk.Button(top, text="Submit")
-    sbutton.grid(row=8, column=1)
+    updatebutton = tk.Button(top, text="Update", command="update")
+    updatebutton.grid(row=8, column=1)
+
+    # connecting to an existing database to store information which is being input by the user:
+    mydatabase = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password='Kapsabet',
+        port="3306",
+        database="Workingwithpython"
+    )
+
+    # creation of cursor which allows us to send command to database  to do something.
+    mycursor = mydatabase.cursor()
+    myrecord = value_button.get()
+    # using a cursor to retrieve data which has been saved into database to be updated
+    mycursor.execute(" SELECT * FROM personal_information where Personal_id = " + myrecord)
+
+    # allows fetching from the database
+    my_data = mycursor.fetchall()
+
+    # looping through the my_data to facilitate retrivial of individual subset
+    for record in my_data:
+        firstname_entry.insert(0, record[1])
+        lastname_entry.insert(0, record[2])
+        email_entry.insert(0, record[3])
+        phonenumber_entry.insert(0, record[4])
+        street_address_entry.insert(0, record[5])
+        city_entry.insert(0, record[6])
+        state_entry.insert(0, record[7])
+        zip_code_entry.insert(0, record[8])
+
+    # creation of a commit to changes we are making to a database.
+    mydatabase.commit()
+
+    # closing the  connection upon completing using the database.
+    mydatabase.close()
 
     root.mainloop()
 
@@ -234,15 +281,15 @@ value_button = tk.Entry()
 value_button.grid(row=9, column=1)
 
 # creating update button which when clicked it leads to update page
-update_button = tk.Button(root, text="Update", command=update)
-update_button.grid(row=10, column=1, padx=10, pady=3, ipadx=50)
+edit_button = tk.Button(root, text="Edit", command=edit)
+edit_button.grid(row=10, column=1, padx=10, pady=3, ipadx=50)
 
-# Creating a button to submit what is being updated.
+# Creating a button to edit has already been input into a database.
 delete_button = tk.Button(text="Delete", command="")
 delete_button.grid(row=11, column=1, padx=10, pady=5, ipadx=50)
 
 # Creating a button to show button to display what is in the database
-show_button = tk.Button(root, text="Show",  command=show_value)
+show_button = tk.Button(root, text="Show", command=show_value)
 show_button.grid(row=12, column=1, padx=10, pady=5, ipadx=50)
 
 root.mainloop()
