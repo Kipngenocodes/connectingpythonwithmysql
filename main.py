@@ -45,7 +45,7 @@ def submit():
     mycursor = my_database.cursor()
 
     # insert into table from the entry widget
-    msql_insertion = ("INSERT INTO Personal_information("
+    msql_insertion = ("INSERT INTO personal_information("
                       "Firstname,"
                       " Lastname,"
                       "mail,"
@@ -84,6 +84,60 @@ def submit():
     city_entry.delete(0, "end"),
     state_entry.delete(0, "end"),
     zip_code_entry.delete(0, "end")
+
+
+
+def update_func():
+    my_database = mysql.connector.connect(
+        # location of the database
+        host="localhost",
+        # defining the user of the database
+        user="root",
+        # password for mysql workbench to access my database
+        password='Kapsabet',
+        # higligthing the port of the database
+        port="3306",
+        # defining or stating the database which all the table which will be used in the project
+        database="Workingwithpython"
+    )
+    '''creation of cursor which allows us to send command to database 
+        to process data returned by an SQL query, one row at a time.'''
+    mycursor = my_database.cursor()
+    myrecord = value_button.get()
+
+    # Update data from the database
+    updatequery=(""" 
+    UPDATE personal_information SET 
+         
+        Firstname=%s,
+        Lastname=%s,
+        mail=%s,
+        Phonenumber=%s,
+        Street_Address=%s,
+        City=%s,
+        State=%s,
+        Zipcode=%s
+        
+     where Personal_id =%s""")
+
+    data_updater =(
+        firstname_entry.get(),
+        lastname_entry.get(),
+        email_entry.get(),
+        phonenumber_entry.get(),
+        street_address_entry.get(),
+        city_entry.get(),
+        state_entry.get(),
+        zip_code_entry.get(),
+        myrecord
+    )
+    mycursor.execute(updatequery, data_updater)
+
+    my_database.commit()
+
+    mycursor.close()
+
+    my_database.close()
 
 
 def show_value():
@@ -206,7 +260,7 @@ def edit_func():
     zip_code_entry.grid(row=7, column=1)
 
     # Creating Button which  when commanded, it links with databse to update information
-    updatebutton = tk.Button(top, text="Update", command="update")
+    updatebutton = tk.Button(top, text="Update", command=update_func)
     updatebutton.grid(row=8, column=1)
 
     # connecting to an existing database to store information which is being input by the user:
