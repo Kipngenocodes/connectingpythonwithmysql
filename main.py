@@ -1,5 +1,6 @@
 # import tkinter module
 import tkinter as tk
+
 # importing the mysql connector to link to mysql database
 import mysql.connector
 
@@ -86,7 +87,6 @@ def submit():
     zip_code_entry.delete(0, "end")
 
 
-
 def update_func():
     my_database = mysql.connector.connect(
         # location of the database
@@ -105,8 +105,8 @@ def update_func():
     mycursor = my_database.cursor()
     myrecord = value_button.get()
 
-    # Update data from the database
-    updatequery=(""" 
+    # Updating data from the database
+    updatequery = (""" 
     UPDATE personal_information SET 
          
         Firstname=%s,
@@ -120,7 +120,8 @@ def update_func():
         
      where Personal_id =%s""")
 
-    data_updater =(
+    # Getting updated data to a database
+    data_updater = (
         firstname_entry.get(),
         lastname_entry.get(),
         email_entry.get(),
@@ -131,12 +132,13 @@ def update_func():
         zip_code_entry.get(),
         myrecord
     )
+    # Executing the changes which are being implemented in database.
     mycursor.execute(updatequery, data_updater)
-
+    # Commiting changes into database
     my_database.commit()
-
+    # Closing the coursor
     mycursor.close()
-
+    # Closig the database
     my_database.close()
 
 
@@ -187,8 +189,9 @@ def show_value():
     # # printing output from our database
     # print(print_myresult)
 
-    #  Closing the cursor and database after execution.
+    #  Closing the cursor
     mycursor.close()
+    # Closing the database
     my_database.close()
 
     root.mainloop()
@@ -307,6 +310,36 @@ def edit_func():
     root.mainloop()
 
 
+# Creating a fuction which will Delete from the database
+def delete_func():
+    my_database = mysql.connector.connect(
+        # location of the database
+        host="localhost",
+        # defining the user of the database
+        user="root",
+        # password for mysql workbench to access my database
+        password='Kapsabet',
+        # higligthing the port of the database
+        port="3306",
+        # defining or stating the database which all the table which will be used in the project
+        database="Workingwithpython"
+    )
+
+    # used to access what is imput in reference to database
+    myrecord = value_button.get()
+    # Creating cursor to be used in database.
+    mycursor = my_database.cursor()
+    # Executing command to delete from the database
+    mycursor.execute("DELETE FROM personal_information where Personal_id =" + myrecord)
+
+    # creation of a commit to changes we are making to a database.
+    my_database.commit()
+
+    # closing the  connection upon completing using the database.
+    my_database.close()
+    return
+
+
 # creating labels for the login page
 firstname_label = tk.Label(root, text="First Name", padx=10, pady=10)
 firstname_label.grid(row=0, column=0)
@@ -367,7 +400,7 @@ edit_button = tk.Button(root, text="Edit", command=edit_func)
 edit_button.grid(row=10, column=1, padx=10, pady=3, ipadx=50)
 
 # Creating a button to edit has already been input into a database.
-delete_button = tk.Button(text="Delete", command="")
+delete_button = tk.Button(text="Delete", command=delete_func)
 delete_button.grid(row=11, column=1, padx=10, pady=5, ipadx=50)
 
 # Creating a button to show button to display what is in the database
