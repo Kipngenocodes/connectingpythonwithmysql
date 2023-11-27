@@ -21,8 +21,11 @@ my_database = mysql.connector.connect(
     password='Kapsabet',
     # higligthing the port of the database
     port="3306",
+
+    auth_plugin='mysql_native_password',
     # defining or stating the database which all the table which will be used in the project
     database="Workingwithpython"
+
 )
 
 
@@ -38,6 +41,8 @@ def submit():
         password='Kapsabet',
         # higligthing the port of the database
         port="3306",
+
+        auth_plugin='mysql_native_password',
         # defining or stating the database which all the table which will be used in the project
         database="Workingwithpython"
     )
@@ -97,6 +102,9 @@ def update_func():
         password='Kapsabet',
         # higligthing the port of the database
         port="3306",
+
+        auth_plugin='mysql_native_password',
+
         # defining or stating the database which all the table which will be used in the project
         database="Workingwithpython"
     )
@@ -159,6 +167,9 @@ def show_value():
         password='Kapsabet',
         # higligthing the port of the database
         port="3306",
+
+        auth_plugin='mysql_native_password',
+
         # defining or stating the database which all the table which will be used in the project
         database="Workingwithpython"
     )
@@ -276,6 +287,9 @@ def edit_func():
         password='Kapsabet',
         # higligthing the port of the database
         port="3306",
+
+        auth_plugin='mysql_native_password',
+
         # defining or stating the database which all the table which will be used in the project
         database="Workingwithpython"
     )
@@ -321,6 +335,9 @@ def delete_func():
         password='Kapsabet',
         # higligthing the port of the database
         port="3306",
+
+        auth_plugin='mysql_native_password',
+
         # defining or stating the database which all the table which will be used in the project
         database="Workingwithpython"
     )
